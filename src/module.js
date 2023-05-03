@@ -1,7 +1,7 @@
 console.log(123);
 
-async function stert() {
+async function start() {
   await Promise.resolve();
 }
 
-stert();
+start();

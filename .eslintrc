@@ -17,5 +17,9 @@
   "parserOptions": {
     "ecmaVersion": "latest",
     "sourceType": "module"
+  },
+  "plugins": [ "html" ],
+  "settings": {
+    "html/html-extensions": [".html", ".we"]
   }
 }

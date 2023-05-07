@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="favicon.ico">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Icons"
+          rel="stylesheet">
+    <title>Pure JavaScript Excel</title>
+</head>
+<body>
+<div id="app" class="container">
+    <div class="excel">
+
+        <div class="excel__header">
+            <input type="text" value="New table" class="excel__header-input"/>
+            <div class="excel__header-buttonBlock">
+                <span class="material-icons button">delete</span>
+                <span class="material-icons button">close</span>
+            </div>
+        </div>
+
+        <div class="excel__toolbar">
+            <span class="material-icons button">format_align_left</span>
+            <span class="material-icons button">format_align_center</span>
+            <span class="material-icons button">format_align_right</span>
+            <span class="material-icons button">format_bold</span>
+            <span class="material-icons button">format_italic</span>
+            <span class="material-icons button">format_underline</span>
+        </div>
+
+        <div class="excel__formula">
+            <div class="info">fx</div>
+            <div class="input" contenteditable spellcheck="false"></div>
+        </div>
+
+        <div class="excel__table">
+            <div class="row">
+                <div class="row-info"></div>
+                <div class="row-data">
+                    <div class="column">A</div>
+                    <div class="column">B</div>
+                    <div class="column">C</div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="row-info">1</div>
+                <div class="row-data">
+                    <div class="cell selected" contenteditable="true">А1</div>
+                    <div class="cell" contenteditable="true">В1</div>
+                    <div class="cell" contenteditable="true">С1</div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="row-info">2</div>
+                <div class="row-data">
+                    <div class="cell" contenteditable="true">А2</div>
+                    <div class="cell" contenteditable="true">В2</div>
+                    <div class="cell" contenteditable="true">С2</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

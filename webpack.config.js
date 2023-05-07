@@ -15,18 +15,6 @@ const filename = (ext) => (
   isDev ? `bundle.${ ext }` : `bundle.[hash].${ ext }`
 )
 
-const jsLoaders = () => {
-  const loaders = [
-    {
-      loader: 'babel-loader',
-      options: {
-        presets: ['@babel/preset-env'],
-      },
-    },
-  ]
-  return loaders
-}
-
 module.exports = {
   context: path.resolve(__dirname, 'src'),
   mode: 'development',
@@ -42,6 +30,7 @@ module.exports = {
       '@core': path.resolve(__dirname, 'src/core'),
     },
   },
+  target: isDev ? 'web' : 'browserslist',
   devtool: isDev ? 'source-map' : false,
   devServer: {
     port: 3000,
@@ -50,7 +39,7 @@ module.exports = {
   plugins: [
     new CleanWebpackPlugin(),
     new HtmlWebpackPlugin({
-      template: 'index.html',
+      template: './index.html',
       minify: {
         removeComments: isProd,
         collapseWhitespace: isProd,
@@ -81,7 +70,10 @@ module.exports = {
       {
         test: /\.m?js$/,
         exclude: /node_modules/,
-        use: jsLoaders(),
+        loader: 'babel-loader',
+        options: {
+          presets: ['@babel/preset-env'],
+        },
       },
     ],
   },

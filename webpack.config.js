@@ -30,6 +30,7 @@ module.exports = {
       '@core': path.resolve(__dirname, 'src/core'),
     },
   },
+  target: isDev ? 'web' : 'browserslist',
   devtool: isDev ? 'source-map' : false,
   devServer: {
     port: 3000,
@@ -38,7 +39,7 @@ module.exports = {
   plugins: [
     new CleanWebpackPlugin(),
     new HtmlWebpackPlugin({
-      template: 'index.html',
+      template: './index.html',
       minify: {
         removeComments: isProd,
         collapseWhitespace: isProd,

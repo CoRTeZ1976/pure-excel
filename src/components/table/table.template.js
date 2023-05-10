@@ -8,8 +8,8 @@ function toCell() {
 }
 
 function toColumn(col) {
-  return `<div class="column" data-resize="col">${ col }
-            <div class="col-resize"></div>
+  return `<div class="column">${ col }
+            <div class="col-resize" data-resize="col"></div>
         </div>
     `
 }

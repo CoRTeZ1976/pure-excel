@@ -9,6 +9,7 @@ export class Table extends ExcelComponent {
       listeners: ['click', 'mousedown', 'mousemove', 'mouseup'],
     })
   }
+
   toHTML() {
     return createTable(20)
   }
@@ -17,9 +18,28 @@ export class Table extends ExcelComponent {
   }
 
   onMousedown(event) {
+    if (event.target.dataset.resize) {
+      console.log('Start resizing', event.target.dataset.resize, event)
+      const obj = event.target.parentNode
+      console.log(obj.clientWidth)
+      console.log(obj.clientHeight)
+      /*      console.log(obj.pageY)
+      console.log(event.pageY)*/
+      console.log(obj.offsetWidth)
+      console.log(obj.style.width)
+      obj.style.width += toString(obj.offsetWidth)
+      // console.log(obj.getAttribute())
+      // eslint-disable-next-line guard-for-in
+      /* for (const objKey in obj) {
+        console.log(objKey)
+      }*/
+    }
   }
 
-  onMousemove() {
+  onMousemove(event) {
+    /* if (event.target.dataset.resize) {
+      console.log('Resizing', event.target.dataset.resize, event)
+    }*/
   }
 
   onMouseup() {

@@ -20,9 +20,8 @@ export class Table extends ExcelComponent {
   onMousedown(event) {
     const $resizer = $(event.target);
     const $parent = $resizer.closest('[data-type="resizable"]');
-    console.log($parent);
-    console.log($parent.$el.clientWidth);
-    $parent.$el.offsetWidth *= 2;
+    console.log($parent.getCoords());
+    $parent.getCoords().width = $parent.getCoords().width * 2;
   }
 
   onMousemove(event) {}

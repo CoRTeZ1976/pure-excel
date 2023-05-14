@@ -76,8 +76,13 @@
     background: $primary-color;
     opacity: 0;
 
-    &:hover {
+    &:hover, {
       opacity: 1;
+    }
+
+    &.resizer-selected {
+      opacity: 1;
+      height: 100vh;
     }
   }
 

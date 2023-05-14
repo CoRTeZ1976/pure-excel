@@ -79,11 +79,6 @@
     &:hover, {
       opacity: 1;
     }
-
-    &.resizer-selected {
-      opacity: 1;
-      height: 100vh;
-    }
   }
 
   .col-resize {
@@ -93,6 +88,10 @@
     &:hover {
       cursor: col-resize;
     }
+    &.resizer-selected {
+      opacity: 1;
+      height: 100vh;
+    }
   }
 
   .row-resize {
@@ -101,6 +100,10 @@
 
     &:hover {
       cursor: row-resize;
+    }
+    &.resizer-selected {
+      opacity: 1;
+      width: 100vw;
     }
   }
 }

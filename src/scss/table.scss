@@ -89,7 +89,6 @@
       cursor: col-resize;
     }
     &.resizer-selected {
-      opacity: 1;
       height: 100vh;
     }
   }
@@ -102,8 +101,12 @@
       cursor: row-resize;
     }
     &.resizer-selected {
-      opacity: 1;
       width: 100vw;
     }
+  }
+
+  .resizer-selected {
+    opacity: 1;
+    z-index: 1000;
   }
 }

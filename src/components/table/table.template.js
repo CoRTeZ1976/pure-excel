@@ -12,8 +12,15 @@ function toCell(_, col) {
 }
 
 function toColumn(col, index) {
-  return `<div class="column" data-type="resizable" data-col="${index}">
+  const userSelect = col !== '' ? 'none' : 'auto'
+  console.log(userSelect)
+  return `<div class="column"
+               data-type="resizable"
+               data-col="${index}"
+               style="user-select: ${userSelect}">
+               
             ${col}
+            
             <div class="col-resize" data-resize="col"></div>
         </div>
     `;
@@ -42,12 +49,19 @@ export function createTable(rowsCount = 15) {
   const colsCount = CHARCODES.Z - CHARCODES.A + 1;
   const rows = [];
 
-  const cols = new Array(colsCount).fill("").map(toChar).map(toColumn).join("");
+  const cols = new Array(colsCount)
+      .fill("")
+      .map(toChar)
+      .map(toColumn)
+      .join("");
 
   rows.push(createRow(null, cols));
 
   for (let i = 0; i < rowsCount; i++) {
-    const cells = new Array(colsCount).fill("").map(toCell).join("");
+    const cells = new Array(colsCount)
+        .fill("")
+        .map(toCell)
+        .join("");
 
     rows.push(createRow(i + 1, cells));
   }

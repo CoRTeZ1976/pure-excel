@@ -11,17 +11,16 @@
     "linebreak-style": "off",
     "operator-linebreak": "off",
     "eol-last": "off",
-    "arrow-parens": "off"
+    "arrow-parens": "off",
+    "quotes": "off",
+    "object-curly-spacing": "off"
   },
-  "extends": [
-    "eslint:recommended",
-    "google"
-  ],
+  "extends": ["eslint:recommended", "google"],
   "parserOptions": {
     "ecmaVersion": "latest",
     "sourceType": "module"
   },
-  "plugins": [ "html" ],
+  "plugins": ["html"],
   "settings": {
     "html/html-extensions": [".html", ".we"]
   }

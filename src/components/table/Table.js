@@ -1,21 +1,28 @@
 import {ExcelComponent} from '@core/ExcelComponent'
 import {createTable} from '@/components/table/table.template'
 import {resizeHandler} from '@/components/table/table.resize'
-import {isCell, matrix, shouldResize} from '@/components/table/table.function'
+import {
+  isCell,
+  matrix,
+  nextSelector,
+  shouldResize,
+} from '@/components/table/table.function'
 import {TableSelection} from '@/components/table/TableSelection'
 import {$} from '@core/Dom'
 
 export class Table extends ExcelComponent {
   static className = 'excel__table'
 
-  constructor($root) {
+  constructor($root, option) {
     super($root, {
-      listeners: ['mousedown'],
+      name: 'Table',
+      listeners: ['mousedown', 'keydown'],
+      ...option,
     })
   }
 
   toHTML() {
-    return createTable(48)
+    return createTable()
   }
 
   prepare() {
@@ -26,6 +33,10 @@ export class Table extends ExcelComponent {
     super.init()
     const $cell = this.$root.find('[data-id="0:0"]')
     this.selection.select($cell)
+
+    this.emitter.subscribe('Formula input', text => {
+      this.selection.current.text(text)
+    })
   }
 
   onMousedown(event) {
@@ -42,5 +53,24 @@ export class Table extends ExcelComponent {
       }
     }
   }
-}
 
+  onKeydown(event) {
+    const keys = [
+      'Enter',
+      'Tab',
+      'ArrowLeft',
+      'ArrowRight',
+      'ArrowDown',
+      'ArrowUp',
+    ]
+
+    const {key} = event
+
+    if (keys.includes(key) && !event.shiftKey) {
+      event.preventDefault()
+      const id = this.selection.current.id(true)
+      const $next = this.$root.find(nextSelector(key, id))
+      this.selection.select($next)
+    }
+  }
+}

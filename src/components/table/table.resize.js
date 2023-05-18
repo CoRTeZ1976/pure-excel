@@ -2,7 +2,7 @@ import {$} from '@core/Dom'
 
 export function resizeHandler($root, event) {
   const $resizer = $(event.target)
-  $resizer.$el.classList.add('resizer-selected')
+  $resizer.addClass('resizer-selected')
   const $parent = $resizer.closest('[data-type="resizable"]')
   const coords = $parent.getCoords()
   let delta = 0
@@ -35,6 +35,6 @@ export function resizeHandler($root, event) {
       $parent.css({height: value + 'px', bottom: 0})
       $resizer.css({bottom: 0})
     }
-    $resizer.$el.classList.remove('resizer-selected')
+    $resizer.removeClass('resizer-selected')
   }
 }

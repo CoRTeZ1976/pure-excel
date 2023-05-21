@@ -9,6 +9,7 @@ import {
 } from '@/components/table/table.function'
 import {TableSelection} from '@/components/table/TableSelection'
 import {$} from '@core/Dom'
+import * as actions from '@/redux/action'
 
 export class Table extends ExcelComponent {
   static className = 'excel__table'
@@ -22,7 +23,7 @@ export class Table extends ExcelComponent {
   }
 
   toHTML() {
-    return createTable()
+    return createTable(48, this.store.getState())
   }
 
   prepare() {
@@ -40,6 +41,8 @@ export class Table extends ExcelComponent {
     this.$on('formula:done', () => {
       this.selection.current.focus()
     })
+
+    this.resizeTable()
   }
 
   selectCell($cell) {
@@ -47,19 +50,26 @@ export class Table extends ExcelComponent {
     this.$emit('table:select', $cell)
   }
 
+  async resizeTable(event) {
+    try {
+      const data = await resizeHandler(this.$root, event)
+      this.$dispatch(actions.tableResize(data))
+    } catch (err) {
+      console.warn(err)
+    }
+  }
+
   onMousedown(event) {
     if (shouldResize(event)) {
-      resizeHandler(this.$root, event)
+      this.resizeTable(event)
     } else if (isCell(event)) {
       const $target = $(event.target)
       if (event.shiftKey) {
-        const $cells = matrix($target, this.selection.current).map((id) => {
-            return this.$root.find(`[data-id="${ id }"`)
-          },
-        )
+        const $cells = matrix($target, this.selection.current)
+          .map((id) => this.$root.find(`[data-id="${ id }"`))
         this.selection.selectGroup($cells)
       } else {
-        this.selection.select($target)
+        this.selectCell($target)
       }
     }
   }

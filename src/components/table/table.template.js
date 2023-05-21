@@ -3,23 +3,27 @@ const CHARCODES = {
   Z: 90,
 }
 
-function toCell(row) {
-  return function(_, col) {
+const DEFAULT_WIDTH = 120
+
+function toCell(state, row) {
+  return (_, col) => {
+    const width = getWidth(state.colState, col)
     return `<div class="cell" 
                 contenteditable="true" 
                 data-col="${ col }"
                 data-type="cell"
                 data-id="${ row }:${ col }"
+                style="width: ${width}"
            ></div>`
   }
 }
 
-function toColumn(col, index) {
+function toColumn({col, index, width}) {
   const userSelect = col !== '' ? 'none' : 'auto'
   return `<div class="column"
                data-type="resizable"
                data-col="${ index }"
-               style="user-select: ${ userSelect }"
+               style="user-select: ${ userSelect }; width: ${ width }"
            >${ col }<div class="col-resize" data-resize="col"></div>
         </div>
     `
@@ -44,23 +48,36 @@ function toChar(_, index) {
   return String.fromCharCode(CHARCODES.A + index)
 }
 
-export function createTable(rowsCount = 48) {
+function getWidth(state, index) {
+  return (state[index] || DEFAULT_WIDTH) + 'px'
+}
+
+function withWidthFrom(state) {
+  return (col, index) => {
+    return {
+      col, index, width: getWidth(state.colState, index),
+    }
+  }
+}
+
+export function createTable(rowsCount = 48, state = {}) {
   const colsCount = CHARCODES.Z - CHARCODES.A + 1
   const rows = []
 
   const cols = new Array(colsCount)
-      .fill('')
-      .map(toChar)
-      .map(toColumn)
-      .join('')
+    .fill('')
+    .map(toChar)
+    .map(withWidthFrom(state))
+    .map(toColumn)
+    .join('')
 
   rows.push(createRow(null, cols))
 
   for (let row = 0; row < rowsCount; row++) {
     const cells = new Array(colsCount)
-        .fill('')
-        .map(toCell(row))
-        .join('')
+      .fill('')
+      .map(toCell(state, row))
+      .join('')
 
     rows.push(createRow(row + 1, cells))
   }

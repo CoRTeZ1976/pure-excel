@@ -4,17 +4,28 @@ const CHARCODES = {
 }
 
 const DEFAULT_WIDTH = 120
+const DEFAULT_HEIGHT = 24
+
+function getWidth(state, index) {
+  return (state[index] || DEFAULT_WIDTH) + 'px'
+}
+
+function getHeight(state, index) {
+  return (state[index] || DEFAULT_HEIGHT) + 'px'
+}
 
 function toCell(state, row) {
   return (_, col) => {
+    const id = `${ row }:${ col }`
     const width = getWidth(state.colState, col)
+    const data = state.dataState[id]
     return `<div class="cell" 
-                contenteditable="true" 
+                contenteditable 
                 data-col="${ col }"
                 data-type="cell"
-                data-id="${ row }:${ col }"
+                data-id="${id}"
                 style="width: ${width}"
-           ></div>`
+           >${data || ''}</div>`
   }
 }
 
@@ -29,12 +40,16 @@ function toColumn({col, index, width}) {
     `
 }
 
-function createRow(index, content) {
+function createRow(index, content, state) {
   const resize = index
     ? `<div class="row-resize" data-resize="row"></div>`
     : ''
+  const height = getHeight(state, index)
   return `
-    <div class="row" data-type="resizable">
+    <div class="row" 
+         data-type="resizable"
+         data-row="${index}"
+         style="height: ${height}">
       <div class="row-info">
         ${ index ? index : '' }
         ${ resize }
@@ -48,14 +63,10 @@ function toChar(_, index) {
   return String.fromCharCode(CHARCODES.A + index)
 }
 
-function getWidth(state, index) {
-  return (state[index] || DEFAULT_WIDTH) + 'px'
-}
-
 function withWidthFrom(state) {
   return (col, index) => {
     return {
-      col, index, width: getWidth(state.colState, index),
+      col, index, width: getWidth(state, index),
     }
   }
 }
@@ -67,11 +78,11 @@ export function createTable(rowsCount = 48, state = {}) {
   const cols = new Array(colsCount)
     .fill('')
     .map(toChar)
-    .map(withWidthFrom(state))
+    .map(withWidthFrom(state.colState))
     .map(toColumn)
     .join('')
 
-  rows.push(createRow(null, cols))
+  rows.push(createRow(null, cols, {}))
 
   for (let row = 0; row < rowsCount; row++) {
     const cells = new Array(colsCount)
@@ -79,7 +90,7 @@ export function createTable(rowsCount = 48, state = {}) {
       .map(toCell(state, row))
       .join('')
 
-    rows.push(createRow(row + 1, cells))
+    rows.push(createRow(row + 1, cells, state.rowState))
   }
 
   return rows.join('')

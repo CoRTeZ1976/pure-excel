@@ -6,12 +6,12 @@ export function resizeHandler($root, event) {
     $resizer.addClass('resizer-selected')
     const $parent = $resizer.closest('[data-type="resizable"]')
     const coords = $parent.getCoords()
+    const type = $resizer.data.resize
     let delta = 0
     let value = 0
-    const elType = $resizer.data.resize
 
     document.onmousemove = e => {
-      if (elType === 'col') {
+      if (type === 'col') {
         delta = e.pageX - coords.right
         value = coords.width + delta
         $resizer.css({right: -delta + 'px'})
@@ -26,7 +26,7 @@ export function resizeHandler($root, event) {
       document.onmousemove = null
       document.onmouseup = null
 
-      if (elType === 'col') {
+      if (type === 'col') {
         $root.findAll(`[data-col="${ $parent.data.col }"]`)
           .forEach(el => {
             el.style.width = value + 'px'
@@ -38,7 +38,8 @@ export function resizeHandler($root, event) {
       }
       resolve({
         value,
-        id: elType === 'col' ? $parent.data.col : null,
+        type,
+        id: $parent.data[type],
       })
       $resizer.removeClass('resizer-selected')
     }
